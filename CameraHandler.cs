@@ -20,7 +20,7 @@ namespace Hi_Team
 		public float followSpeed = 0.1f;
 		public float pivotSpeed = 0.03f;
 
-		private float targetPosition;
+		private float targetPosition;  
 		private float defaultPosition;
 		private float lookAngle;
 		private float pivotAngle;
@@ -49,8 +49,8 @@ namespace Hi_Team
 
 		public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
         {
-			lookAngle += (mouseXInput + lookSpeed) / delta;
-			pivotAngle -= (mouseYInput + pivotSpeed) / delta;
+			lookAngle += (mouseXInput * lookSpeed) / delta;
+			pivotAngle -= (mouseYInput * pivotSpeed) / delta;
 			pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
 
 			Vector3 rotation = Vector3.zero;
@@ -70,9 +70,9 @@ namespace Hi_Team
 			targetPosition = defaultPosition;
 			RaycastHit hit;
 			Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
-			direction.Nomarlize();
+			direction.Normalize();
 
-			if(Physis.SphereCast
+			if(Physics.SphereCast
 				(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), 
 				ignoreLayers))
             {
