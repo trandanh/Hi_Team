@@ -20,11 +20,16 @@ namespace Hi_Team
 		public float followSpeed = 0.1f;
 		public float pivotSpeed = 0.03f;
 
+		private float targetPosition;
 		private float defaultPosition;
 		private float lookAngle;
 		private float pivotAngle;
 		public float minimumPivot = -35;
 		public float maximumPivot = 35;
+		
+		public float cameraSphereRadius = 0.2f;
+		public float cameraCollisionOffSet = 0.2f;
+		public float minimumCollisionOffSet = 0.2f;
 
 		private void Awake()
 		{
@@ -36,9 +41,10 @@ namespace Hi_Team
 
 		public void FollowTarget(float delta)
         {
-			Vector3 targetPosition = Vector3.SmoothDamp
-				(myTransform.position, targetPosition.position, ref cameraFollowVelocity,delta/followSpeed);
+			Vector3 targetPosition = Vector3.SmoothDamp(myTransform.position, targetPosition.position, ref cameraFollowVelocity,delta/followSpeed);
 			myTransform.position = targetPosition;
+
+			HandleCameraCollision(delta);
         }
 
 		public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
@@ -57,6 +63,30 @@ namespace Hi_Team
 
 			targetRotation = Quaternion.Euler(rotation);
 			cameraPivotTransform.localRotation = targetRotation;
+		}
+		
+		public void HandleCameraCollision(float delta)
+		{
+			targetPosition = defaultPosition;
+			RaycastHit hit;
+			Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+			direction.Nomarlize();
+
+			if(Physis.SphereCast
+				(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), 
+				ignoreLayers))
+            {
+				float dis = Vector3.Distance(cameraPivotTransform.position, hit.point);
+				targetPosition = -(dis - cameraCollisionOffSet);
+            }
+
+			if(Mathf.Abs(targetPosition) < minimumCollisionOffSet)
+            {
+				targetPosition = -minimumCollisionOffSet;
+			}
+
+			cameraTransformPosition.z = Mathf.Lerp(cameraTransform.position.z, targetPosition, delta / 0.2f);
+			cameraTransform.location = cameraTransformPosition;
 		}
 	}
 }
