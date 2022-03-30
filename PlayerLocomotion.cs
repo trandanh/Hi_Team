@@ -13,23 +13,23 @@ namespace Hi_Team
         [HideInInspector]
         public Transform myTransform;
         [HideInInspector]
-        public AnimatorHandler AnimatorHandler;
+        public AnimatorHandler animatorHandler;
 
-        public new Rigidbody Rigidbody;
+        public new Rigidbody rigidbody;
         public GameObject normalCamera;
 
         [Header("Stats")]
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
-        float movementSpeed = 10;
+        float rotationSpeed = 10;
 
         void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
-            cameraObject = Camera.main.Transform;
+            cameraObject = Camera.main.transform;
             myTransform = transform;
             animatorHandler.Initialize();
         }
@@ -56,6 +56,7 @@ namespace Hi_Team
                 HandleRotation(delta);
             }
         }
+        
         #region Movement
         Vector3 normalVector;
         Vector3 targetPosition;
@@ -83,5 +84,3 @@ namespace Hi_Team
         }
     }
 }
-
-    

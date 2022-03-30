@@ -14,8 +14,8 @@ namespace Hi_Team
         public void Initialize()
         {
             anim = GetComponent<Animator>();
-            vertical = AnimatorHandler.StringToHash("Vertical");
-            horizontal = AnimatorHandler.StringToHash("Horizontal");
+            vertical = Animator.StringToHash("Vertical");
+            horizontal = Animator.StringToHash("Horizontal");
         }
 
         public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
@@ -74,7 +74,7 @@ namespace Hi_Team
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
-        public void canRotate()
+        public void CanRotate()
         {
             canRotate = true;
         }
@@ -83,5 +83,6 @@ namespace Hi_Team
         {
             canRotate = false;
         }
+    
     }
 }
