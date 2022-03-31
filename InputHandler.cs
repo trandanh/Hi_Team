@@ -13,6 +13,11 @@ namespace Hi_Team
         public float mouseX;
         public float mouseY;
 
+        public bool b_Input;
+
+        public bool isInteracting;;
+        public bool rollFlag;
+
         PlayerControls inputActions;
         CameraHandler cameraHandler;
 
@@ -63,6 +68,15 @@ namespace Hi_Team
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+
+        private void HandleRolInput(float delta)
+        {
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            if (b_Input)
+            {
+                rollFlag = true;
+            }
         }
 
     }
