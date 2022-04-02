@@ -15,8 +15,12 @@ namespace Hi_Team
 
         public bool b_Input;
 
-        public bool isInteracting;;
         public bool rollFlag;
+        public float rollInputTimer;
+        public bool sprintFlag;
+
+        public bool isInteracting;;
+        
 
         PlayerControls inputActions;
         CameraHandler cameraHandler;
@@ -73,9 +77,20 @@ namespace Hi_Team
         private void HandleRolInput(float delta)
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+
             if (b_Input)
             {
-                rollFlag = true;
+                rollInputTimer += delta;
+                sprintFlag = true;
+            }
+            else
+            {
+                if (rollInputTimer > 0 && rollInputTimer < 0.5f)
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+                rollInputTimer = 0;
             }
         }
 
